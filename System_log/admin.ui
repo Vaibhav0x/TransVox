@@ -20,20 +20,20 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>GroupBox</string>
+      <string/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QPushButton" name="check_btn">
-        <property name="text">
-         <string>Check User reg</string>
-        </property>
-       </widget>
-      </item>
       <item>
        <widget class="QPushButton" name="del_btn">
         <property name="text">
          <string>Delete User</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cancel_btn">
+        <property name="text">
+         <string>Cancel</string>
         </property>
        </widget>
       </item>

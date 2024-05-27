@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets,QtCore
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, pyqtSignal,QUrl
 from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog, QMainWindow,QSlider,QDialog,QListWidgetItem
@@ -24,14 +24,14 @@ import resources
 import sys
 import re
 import os
-from PyQt5 import QtWidgets, uic
 from database import *
+from System_log import login_assets_qrc
 
 # Email validation regex pattern
 EMAIL_REGEX = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
 def check_ui_files():
-    required_files = [r'System_log\login.ui', r'System_log\create.ui', r'System_log\main.ui']
+    required_files = [r'System_log\login.ui', r'System_log\create.ui', r'Ui\main.ui']
     for file in required_files:
         if not os.path.isfile(file):
             raise FileNotFoundError(f"Required UI file '{file}' not found.")
@@ -40,13 +40,17 @@ class LoginWindow(QtWidgets.QDialog):
     def __init__(self):
         super(LoginWindow, self).__init__()
         uic.loadUi(r'System_log\login.ui', self)
-
+        self.setWindowTitle("Login System")
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
         self.login_btn.clicked.connect(self.handle_login)
         self.new_acc_btn.clicked.connect(self.open_create_account_window)
         self.forgot_btn.clicked.connect(self.open_reset_credentials_window)   
         
         self.show_btn.pressed.connect(self.show_password)
         self.show_btn.released.connect(self.hide_password)
+
+        self.cancel_btn.clicked.connect(self.close)
 
     def handle_login(self):
         username = self.username_input.text()
@@ -81,8 +85,11 @@ class CreateAccountWindow(QtWidgets.QDialog):
     def __init__(self):
         super(CreateAccountWindow, self).__init__()
         uic.loadUi(r'System_log\create.ui', self)
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
 
         self.create_acc_btn.clicked.connect(self.handle_create_account)
+        self.cancel_btn.clicked.connect(self.close)
 
     def handle_create_account(self):
         full_name = self.user_name_input.text()
@@ -112,6 +119,7 @@ class ResetCredentialsWindow(QtWidgets.QDialog):
         self.create_acc_btn.clicked.connect(self.handle_reset_credentials)
         self.label1.setText("Enter Old Username:")
         self.user_name_input.setPlaceholderText("Enter old username")
+        self.cancel_btn.clicked.connect(self.close)
         # self.label2.setText(":")
         # self.fullNameInput.setPlaceholderText("Enter old username")
 
@@ -144,6 +152,8 @@ class AdminLoginWindow(QtWidgets.QDialog):
         uic.loadUi(r'System_log\login.ui', self)
 
         self.login_btn.clicked.connect(self.handle_admin_login)
+        self.create_acc_btn.setEnabled(False)
+        self.cancel_btn.clicked.connect(self.close)
 
     def handle_admin_login(self):
         username = self.username_input.text()
@@ -167,6 +177,7 @@ class AdminMainWindow(QtWidgets.QDialog):
 
         self.del_btn.clicked.connect(self.handle_delete_user)
         self.populate_user_list()
+        self.cancel_btn.clicked.connect(self.close)
 
     def populate_user_list(self):
         self.userListWidget.clear()

@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="Assets">
+    <file>login_assets/eye.png</file>
+    <file>login_assets/hidden.png</file>
+  </qresource>
+</RCC>

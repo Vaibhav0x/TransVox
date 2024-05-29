@@ -115,7 +115,7 @@
         </property>
         <property name="icon">
          <iconset resource="login_assets.qrc">
-          <normaloff>:/Assets/login_assets/hidden.png</normaloff>:/Assets/login_assets/hidden.png</iconset>
+          <normaloff>:/Assets/login_assets/eye.png</normaloff>:/Assets/login_assets/eye.png</iconset>
         </property>
        </widget>
       </item>

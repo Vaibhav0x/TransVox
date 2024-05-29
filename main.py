@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets,QtCore
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, pyqtSignal,QUrl
+from PyQt5.QtCore import Qt, pyqtSignal,QUrl,QTimer
 from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog, QMainWindow,QSlider,QDialog,QListWidgetItem
 from PyQt5.QtGui import QIcon
 from spellchecker import SpellChecker
@@ -14,7 +14,6 @@ import pyttsx3
 from googletrans import Translator, LANGUAGES
 import shutil
 import speech_recognition as sr
-from PyQt5.QtCore import QTimer
 from pydub import AudioSegment
 import pygame
 from multiprocessing import Process
@@ -41,16 +40,22 @@ class LoginWindow(QtWidgets.QDialog):
         super(LoginWindow, self).__init__()
         uic.loadUi(r'System_log\login.ui', self)
         self.setWindowTitle("Login System")
-        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
         self.login_btn.clicked.connect(self.handle_login)
         self.new_acc_btn.clicked.connect(self.open_create_account_window)
         self.forgot_btn.clicked.connect(self.open_reset_credentials_window)   
         
-        self.show_btn.pressed.connect(self.show_password)
-        self.show_btn.released.connect(self.hide_password)
+        self.show_btn.clicked.connect(self.toggle_password_visibility)
+        
+        self.password_visible = False
+        self.password_input.setEchoMode(QtWidgets.QLineEdit.Password)  # Set password field to hide text by default
 
-        self.cancel_btn.clicked.connect(self.close)
+        self.cancel_btn.clicked.connect(self.Confirm_Close)
+
+    def Confirm_Close(self):
+        reply=QMessageBox().question(self,"Warning","Do you want to Exit",QMessageBox.Yes| QMessageBox.No)
+        if reply==QMessageBox.Yes:
+            self.close()
 
     def handle_login(self):
         username = self.username_input.text()
@@ -59,37 +64,49 @@ class LoginWindow(QtWidgets.QDialog):
             self.open_main_window(username)
         else:
             QtWidgets.QMessageBox.warning(self, 'Error', 'Invalid username or password')
+        self.close()
 
     def open_create_account_window(self):
         self.create_account_window = CreateAccountWindow()
         self.create_account_window.show()
-        self.close()
+        # self.close()
 
     def open_reset_credentials_window(self):
         self.reset_credentials_window = ResetCredentialsWindow()
         self.reset_credentials_window.show()
-        self.close()
+        # self.close()
 
     def open_main_window(self, username):
         self.main_window = MainWindow(username)
         self.main_window.show()
         self.close()
 
-    def show_password(self):
-        self.password_input.setEchoMode(QtWidgets.QLineEdit.Normal)
-
-    def hide_password(self):
-        self.password_input.setEchoMode(QtWidgets.QLineEdit.Password)
+    def toggle_password_visibility(self):
+        if self.password_visible:
+            self.password_input.setEchoMode(QtWidgets.QLineEdit.Password)
+            self.show_btn.setIcon(QIcon(r"System_log/login_assets/eye.png"))
+            # self.show_password_btn.setText("Show Password")
+        else:
+            self.password_input.setEchoMode(QtWidgets.QLineEdit.Normal)
+            self.show_btn.setIcon(QIcon(r"System_log/login_assets/hidden.png"))
+            # self.show_password_btn.setText("Hide Password")
+        self.password_visible = not self.password_visible
 
 class CreateAccountWindow(QtWidgets.QDialog):
     def __init__(self):
         super(CreateAccountWindow, self).__init__()
         uic.loadUi(r'System_log\create.ui', self)
+        self.setWindowTitle("Create Account")
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
 
         self.create_acc_btn.clicked.connect(self.handle_create_account)
-        self.cancel_btn.clicked.connect(self.close)
+        self.cancel_btn.clicked.connect(self.Confirm_Close)
+
+    def Confirm_Close(self):
+        reply=QMessageBox().question(self,"Create Account","You Doesn't want to Create Account",QMessageBox.Yes| QMessageBox.No)
+        if reply==QMessageBox.Yes:
+            self.close()
 
     def handle_create_account(self):
         full_name = self.user_name_input.text()
@@ -114,14 +131,20 @@ class ResetCredentialsWindow(QtWidgets.QDialog):
     def __init__(self):
         super(ResetCredentialsWindow, self).__init__()
         uic.loadUi(r'System_log\create.ui', self)
-        
+        self.setWindowTitle("Reset Account Info")
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
         self.create_acc_btn.setText("Forgot")
         self.create_acc_btn.clicked.connect(self.handle_reset_credentials)
         self.label1.setText("Enter Old Username:")
         self.user_name_input.setPlaceholderText("Enter old username")
-        self.cancel_btn.clicked.connect(self.close)
+        self.cancel_btn.clicked.connect(self.Confirm_Close)
         # self.label2.setText(":")
         # self.fullNameInput.setPlaceholderText("Enter old username")
+
+    def Confirm_Close(self):
+        reply=QMessageBox().question(self,"Reset Credentials","You doesn't want to reset the password and username",QMessageBox.Yes| QMessageBox.No)
+        if reply==QMessageBox.Yes:
+            self.close()
 
     def handle_reset_credentials(self):
         old_username = self.user_name_input.text()
@@ -136,7 +159,7 @@ class ResetCredentialsWindow(QtWidgets.QDialog):
 
         if update_user_credentials(old_username, email, new_username, new_password):
             QtWidgets.QMessageBox.information(self, 'Success', 'Credentials reset successfully')
-            self.open_login_window()
+            self.close()
         else:
             QtWidgets.QMessageBox.warning(self, 'Error', 'Invalid email or old username')
 
@@ -152,7 +175,7 @@ class AdminLoginWindow(QtWidgets.QDialog):
         uic.loadUi(r'System_log\login.ui', self)
 
         self.login_btn.clicked.connect(self.handle_admin_login)
-        self.create_acc_btn.setEnabled(False)
+        self.new_acc_btn.setEnabled(False)
         self.cancel_btn.clicked.connect(self.close)
 
     def handle_admin_login(self):
@@ -317,8 +340,7 @@ class MainWindow(QMainWindow):
         self.actionVoice_to_Text.triggered.connect(lambda: self.stackedWidget.setCurrentIndex(2)) 
         self.actionText_to_Voice.triggered.connect(lambda: self.stackedWidget.setCurrentIndex(3))
         
-
-        self.actionVoice_Setting.triggered.connect(self.voice_setting)
+        # self.actionVoice_Setting.triggered.connect(self.open_voice_settings_dialog)
 
         '''
         Voice to text button widget connections
@@ -377,20 +399,25 @@ class MainWindow(QMainWindow):
         self.actionUser_Account.triggered.connect(self.open_admin_login)
         log_user_activity(self.username, "Logged in")
 
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, 'Close Confirmation',
+                                               'Do you want to close the application?',
+                                               QMessageBox.Yes | QMessageBox.No,
+                                               QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
     def show_system_logs(self):
+        self.window=QDialog()
+        uic.loadUi(r"System_log\system_logs.ui",self.window)
+        self.window.setWindowTitle("System Logs")
         logs = get_user_logs()
-
-        self.logsWindow = QtWidgets.QWidget()
-        self.logsWindow.setWindowTitle("System Logs")
-        layout = QtWidgets.QVBoxLayout()
-        
-        list_widget = QtWidgets.QListWidget()
         for log in logs:
-            list_widget.addItem(f"User: {log[0]}, Time: {log[1]}, Data: {log[2]}")
-
-        layout.addWidget(list_widget)
-        self.logsWindow.setLayout(layout)
-        self.logsWindow.show()
+            self.window.listWidget.addItem(f"User: {log[0]}, Time: {log[1]}, Data: {log[2]}")
+        self.window.close_btn.clicked.connect(self.window.close)
+        self.window.exec_()
     
     def open_admin_login(self):
         self.admin_login_window = AdminLoginWindow()
@@ -426,37 +453,41 @@ class MainWindow(QMainWindow):
             print("Exception in update selected lang:",e)
 
     def onTextChanged(self):
-        user_input_text = self.user_text.toPlainText()
-        cursor = self.user_text.textCursor()
-        self.cursor_position = cursor.position()  # Update cursor position
+        try:
+            user_input_text = self.user_text.toPlainText()
+            cursor = self.user_text.textCursor()
+            self.cursor_position = cursor.position()  # Update cursor position
 
-        # Get word at cursor position
-        text_before_cursor = user_input_text[:self.cursor_position]
-        last_word_start = text_before_cursor.rfind(' ') + 1
-        last_word = text_before_cursor[last_word_start:]
+            # Get word at cursor position
+            text_before_cursor = user_input_text[:self.cursor_position]
+            last_word_start = text_before_cursor.rfind(' ') + 1
+            last_word = text_before_cursor[last_word_start:]
 
         # Detect language of the text
-        try:
+       
             language = detect(user_input_text)
             self.input_lang_label.setText(f'Detected Language: {LANGUAGES[language]}')
         except:
             language = 'unknown'
 
         # Spell check last word if the detected language is English
-        if language == 'en':
-            if last_word and last_word.isalpha():  # Only check if the word is alphabetic
-                spell = SpellChecker()
-                misspelled = spell.unknown([last_word])
+        try:
+            if language == 'en':
+                if last_word and last_word.isalpha():  # Only check if the word is alphabetic
+                    spell = SpellChecker()
+                    misspelled = spell.unknown([last_word])
 
-                # Display suggestions if misspelled
-                if misspelled:
-                    suggestions = spell.candidates(last_word)
-                    self.suggestions_list.clear()
-                    self.suggestions_list.addItems(suggestions)
-                else:
-                    self.suggestions_list.clear()
-        else:
-            self.suggestions_list.clear()
+                    # Display suggestions if misspelled
+                    if misspelled:
+                        suggestions = spell.candidates(last_word)
+                        self.suggestions_list.clear()
+                        self.suggestions_list.addItems(suggestions)
+                    else:
+                        self.suggestions_list.clear()
+            else:
+                self.suggestions_list.clear()
+        except Exception as e:
+            print("Exception in onText Changed:",e)
 
     def onSuggestionClicked(self, item):
         try:
@@ -524,10 +555,13 @@ class MainWindow(QMainWindow):
             print("Exception in speak text:",e)
         
     def getLanguageCode(self, language_name):
-        for code, name in googletrans.LANGUAGES.items():
-            if name.lower() == language_name.lower():
-                return code
-        return None
+        try:
+            for code, name in googletrans.LANGUAGES.items():
+                if name.lower() == language_name.lower():
+                    return code
+            return None
+        except Exception as e:
+            print("Exception in get language:",e)
 
 
     '''
@@ -542,41 +576,12 @@ class MainWindow(QMainWindow):
             self.play_btn.setEnabled(True)
             self.generate_text_btn.setEnabled(True)
 
-    # def transcribe_audio(self):
-    #     if hasattr(self, 'audio_file'):
-    #         # Convert MP3 to WAV
-    #         wav_file = 'converted_audio.wav'
-    #         audio = AudioSegment.from_mp3(self.audio_file)
-    #         audio.export(wav_file, format="wav")
-
-    #         # Transcribe the WAV file
-    #         with sr.AudioFile(wav_file) as source:
-    #             audio_data = self.recognizer.record(source)
-    #             try:
-    #                 self.transcription = self.recognizer.recognize_google(audio_data)
-    #                 self.text_edit.setText(self.transcription)
-    #                 QMessageBox().information(self,"Transcription Saved","File Successfully Transcribed")
-    #             except sr.UnknownValueError:
-    #                 QMessageBox().information(self,"Could not understand the audio")
-    #             except sr.RequestError as e:
-    #                 QMessageBox().warning(self,"Error: {0}".format(e))
-
-    #         # Remove the temporary WAV file
-    #         os.remove(wav_file)
-    #     else:
-    #         QMessageBox().information(self,"No Audio file selected")
-
     def transcribe_audio(self):
         if hasattr(self, 'audio_file'):
             # Convert MP3 to WAV
             wav_file = 'converted_audio.wav'
             audio = AudioSegment.from_mp3(self.audio_file)
             audio.export(wav_file, format="wav")
-
-            # # Create a progress dialog
-            # progress_dialog = QProgressDialog("Transcribing audio...", None, 0, 0, self)
-            # progress_dialog.setWindowModality(Qt.WindowModal)
-            # progress_dialog.show()
 
             # Disable main window interaction while progress dialog is open
             self.setEnabled(False)
@@ -636,13 +641,16 @@ class MainWindow(QMainWindow):
 
 
     def reset_file(self):
-        self.audio_file = None
-        self.audio_label.setText(".wav file")
-        self.play_btn.setIcon(QIcon(r'resources\play.png')) 
-        self.media_player.pause()
-        self.play_btn.setEnabled(False) 
-        self.save_text_btn.setEnabled(False)
-        self.generate_text_btn.setEnabled(False)
+        reply=QMessageBox.question(self,"Warning","Do you want to reset the transcription and file",QMessageBox.Yes | QMessageBox.No)
+        if reply==QMessageBox.Yes:
+            self.audio_file = None
+            self.audio_label.setText(".wav file")
+            self.text_edit.setText("")
+            self.play_btn.setIcon(QIcon(r'resources\play.png')) 
+            self.media_player.pause()
+            self.play_btn.setEnabled(False) 
+            self.save_text_btn.setEnabled(False)
+            self.generate_text_btn.setEnabled(False)
 
     def sliderMoved(self, position):
         # You can implement seeking functionality here
@@ -663,13 +671,13 @@ class MainWindow(QMainWindow):
             self.text_slider_label.setText('00:00')
             self.play_btn.setIcon(QIcon(r'resources\play.png'))
 
-    def voice_setting(self):
-        try:
-            dialog = VoiceSettingsDialog(self.engine)
-            dialog.generate_btn.setEnabled(False)
-            dialog.exec_()
-        except Exception as e:
-            QMessageBox().warning(self,f"Warning{'You can not set at this point'}:{e}")
+    # def voice_setting(self):
+    #     try:
+    #         dialog = VoiceSettingsDialog(self.engine)
+    #         dialog.generate_btn.setEnabled(False)
+    #         dialog.exec_()
+    #     except Exception as e:
+    #         QMessageBox().warning(self,f"Warning{'You can not set at this point'}:{e}")
 
     def open_voice_settings_dialog(self, gender):
         dialog = VoiceSettingsDialog(self.engine)
@@ -685,28 +693,6 @@ class MainWindow(QMainWindow):
         self.engine.setProperty('pitch', pitch)
         self.engine.setProperty('volume', volume / 100)  # Convert volume to a float between 0 and 1
         self.engine.setProperty('rate', rate)
-    
-    # def generate_voice(self, gender,pitch,rate,volume):
-    #     text = self.input_text.toPlainText()
-    #     if text:
-    #         if gender == 'male':
-    #             voice_name = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0'
-    #             output_filename = f'output_male_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.wav'
-    #         elif gender == 'female':
-    #             voice_name = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0'
-    #             output_filename = f'output_female_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.wav'
-
-    #         # Set voice property            
-    #         self.engine.setProperty('voice', voice_name)
-    #         self.engine.setProperty('pitch', pitch)
-    #         self.engine.setProperty('volume', volume / 100)
-    #         self.engine.setProperty('rate', rate)
-    #         # Save to file in WAV format
-    #         self.engine.save_to_file(text, output_filename)
-    #         self.engine.runAndWait()
-
-    #         # Store the generated filename
-    #         self.output_filename = output_filename
 
     '''
     ----------------------------Text to Voice Transcribe Widget Functionalities-------------------------------------------
@@ -716,10 +702,10 @@ class MainWindow(QMainWindow):
         if text:
             if gender == 'male':
                 voice_name = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0'
-                output_filename = f'output_male_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.wav'
+                output_filename = f'output_male_{datetime.now().strftime("%Y%m%d_%H%M%S")}.wav'
             elif gender == 'female':
                 voice_name = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0'
-                output_filename = f'output_female_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.wav'
+                output_filename = f'output_female_{datetime.now().strftime("%Y%m%d_%H%M%S")}.wav'
 
             # Set voice property            
             self.engine.setProperty('voice', voice_name)
@@ -761,18 +747,18 @@ class MainWindow(QMainWindow):
     #     QMessageBox.information(self, "Voice Generated", "Zira voice generated successfully.")
 
     def play_ai_voice(self):
-        pygame.mixer.init()
-        if self.output_filename:
-            if not pygame.mixer.music.get_busy():
-                pygame.mixer.music.load(self.output_filename)
-                pygame.mixer.music.play()
-                self.timer.start()  # Start the timer
-                self.play_pause_btn.setIcon(QIcon(r'resources\pause.png'))
-            else:
-                pygame.mixer.music.stop()
-                self.timer.stop()  # Stop the timer
-                self.timer_label.setText('00:00')
-                self.play_pause_btn.setIcon(QIcon(r'resources\play.png'))
+            pygame.mixer.init()
+            if self.output_filename:
+                if not pygame.mixer.music.get_busy():
+                    pygame.mixer.music.load(self.output_filename)
+                    pygame.mixer.music.play()
+                    self.timer.start()  # Start the timer
+                    self.play_pause_btn.setIcon(QIcon(r'resources\pause.png'))
+                else:
+                    pygame.mixer.music.stop()
+                    self.timer.stop()  # Stop the timer
+                    self.timer_label.setText('00:00')
+                    self.play_pause_btn.setIcon(QIcon(r'resources\play.png'))
     
     def updateVoiceTime(self):
         pygame.mixer.init()
@@ -828,7 +814,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     login_window = LoginWindow()
     login_window.show()
-    # app = QApplication(sys.argv)
-    # window = MainWindow()
-    # window.show()
     sys.exit(app.exec_()) 

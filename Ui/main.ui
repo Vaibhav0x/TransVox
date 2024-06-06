@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #957777;</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -52,7 +52,7 @@
 	background-color: #99627A;
 }
 QToolButton:hover{
-background-color: #FBFFDC;
+background-color: #8BB3EE;
 }</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,0,0,0,0">
@@ -286,7 +286,7 @@ background-color: #FBFFDC;
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="styleSheet">
-       <string notr="true">background-color:#B9B4C7;</string>
+       <string notr="true">background-color:#111B31;</string>
       </property>
       <property name="lineWidth">
        <number>0</number>
@@ -320,7 +320,7 @@ background-color: #FBFFDC;
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #B9B4C7;
+           <string notr="true">background-color: #111B31;
 font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_18">
@@ -336,7 +336,7 @@ font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgb(85, 0, 0);</string>
+              <string notr="true">color: rgb(220,220,220);</string>
              </property>
              <property name="locale">
               <locale language="English" country="India"/>
@@ -364,7 +364,8 @@ font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
               <item row="0" column="0">
                <widget class="QTextEdit" name="textEdit">
                 <property name="styleSheet">
-                 <string notr="true">background-color:#B9B4C7;</string>
+                 <string notr="true">background-color:#111B31;
+color:white;</string>
                 </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -385,7 +386,8 @@ p, li { white-space: pre-wrap; }
               <item row="0" column="0">
                <widget class="QTextEdit" name="textEdit_2">
                 <property name="styleSheet">
-                 <string notr="true">background-color: #B9B4C7;</string>
+                 <string notr="true">background-color: #111B31;
+color:white;</string>
                 </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -406,7 +408,8 @@ p, li { white-space: pre-wrap; }
               <item row="0" column="0">
                <widget class="QTextEdit" name="textEdit_3">
                 <property name="styleSheet">
-                 <string notr="true">background-color: #B9B4C7;</string>
+                 <string notr="true">background-color: #111B31;
+color:white;</string>
                 </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -427,7 +430,8 @@ p, li { white-space: pre-wrap; }
               <item row="0" column="0">
                <widget class="QTextEdit" name="textEdit_4">
                 <property name="styleSheet">
-                 <string notr="true">background-color:#B9B4C7;</string>
+                 <string notr="true">background-color:#111B31;
+color:white;</string>
                 </property>
                 <property name="lineWidth">
                  <number>0</number>
@@ -453,7 +457,7 @@ p, li { white-space: pre-wrap; }
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #B9B4C7;</string>
+           <string notr="true">background-color: #111B31;</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
@@ -472,7 +476,7 @@ p, li { white-space: pre-wrap; }
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgb(85, 0, 0);</string>
+              <string notr="true">color: rgb(220, 220, 220);</string>
              </property>
              <property name="text">
               <string>TranslateXpress</string>
@@ -487,6 +491,9 @@ p, li { white-space: pre-wrap; }
         </item>
         <item>
          <widget class="QWidget" name="widget_11" native="true">
+          <property name="styleSheet">
+           <string notr="true">color:white;</string>
+          </property>
           <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,1">
            <item>
             <widget class="QWidget" name="widget_17" native="true">
@@ -579,7 +586,8 @@ background-color: rgb(249, 250, 212);
                     </sizepolicy>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    <string notr="true">background-color: rgb(255, 255, 255);
+color:black;</string>
                    </property>
                   </widget>
                  </item>
@@ -605,7 +613,8 @@ background-color: rgb(249, 250, 212);
                     </sizepolicy>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    <string notr="true">background-color: rgb(255, 255, 255);
+color:black;</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -636,9 +645,10 @@ background-color: rgb(249, 250, 212);
                 <property name="styleSheet">
                  <string notr="true">QToolButton{
 background-color:#C88EA7;
+color:black;
 }
 QToolButton:hover{
-background-color:rgb(255,255,255);
+background-color:8BB3EE;
 }</string>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_17">
@@ -679,9 +689,10 @@ background-color:rgb(255,255,255);
              <property name="styleSheet">
               <string notr="true">QToolButton{
 background-color:#C88EA7;
+color:black;
 }
 QToolButton:hover{
-background-color:rgb(255,255,255);
+background-color:8BB3EE;
 }</string>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -714,7 +725,8 @@ background-color:rgb(255,255,255);
                     </font>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    <string notr="true">background-color: rgb(255, 255, 255);
+color:black;</string>
                    </property>
                    <property name="html">
                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -759,6 +771,9 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="toolTip">
                  <string>to translate the text</string>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
                 </property>
                 <property name="text">
                  <string>Translate</string>
@@ -805,7 +820,8 @@ p, li { white-space: pre-wrap; }
                     </font>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: rgb(255, 255, 255);</string>
+                    <string notr="true">background-color: rgb(255, 255, 255);
+color:black;</string>
                    </property>
                    <property name="html">
                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -860,7 +876,7 @@ p, li { white-space: pre-wrap; }
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #B9B4C7;</string>
+           <string notr="true">background-color: #111B31;</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_19">
            <item row="0" column="0" alignment="Qt::AlignHCenter">
@@ -880,7 +896,7 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="styleSheet">
               <string notr="true">
-color: rgb(85, 0, 0);
+color: rgb(220, 220,220);
 
 </string>
              </property>
@@ -894,6 +910,11 @@ color: rgb(85, 0, 0);
         </item>
         <item>
          <widget class="QWidget" name="widget_5" native="true">
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+color:black;
+}</string>
+          </property>
           <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2">
            <item>
             <widget class="QWidget" name="widget_3" native="true">
@@ -908,10 +929,14 @@ color: rgb(85, 0, 0);
                <widget class="QWidget" name="widget_9" native="true">
                 <property name="styleSheet">
                  <string notr="true">QToolButton:hover{
-background-color: rgb(255, 243, 225);
+background-color:8BB3EE;
 }
 QToolButton{
 background-color:#C88EA7;
+color:black;
+}
+QWidget{
+color:white;
 }
 </string>
                 </property>
@@ -920,6 +945,9 @@ background-color:#C88EA7;
                   <widget class="QToolButton" name="open_btn">
                    <property name="toolTip">
                     <string>to open the file from your computer</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color:black;</string>
                    </property>
                    <property name="text">
                     <string>Open File</string>
@@ -1008,6 +1036,9 @@ background-color:#C88EA7;
                    <property name="toolTip">
                     <string>to generate the text</string>
                    </property>
+                   <property name="styleSheet">
+                    <string notr="true">color:black;</string>
+                   </property>
                    <property name="text">
                     <string>Generate Text</string>
                    </property>
@@ -1030,6 +1061,9 @@ background-color:#C88EA7;
                   <widget class="QToolButton" name="save_text_btn">
                    <property name="toolTip">
                     <string>save the generated text in file</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color:black;</string>
                    </property>
                    <property name="text">
                     <string>Save File</string>
@@ -1083,7 +1117,8 @@ background-color:#C88EA7;
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">font: 75 10pt &quot;MS Shell Dlg 2&quot;;</string>
+                 <string notr="true">font: 75 10pt &quot;MS Shell Dlg 2&quot;;
+color:white;</string>
                 </property>
                 <property name="text">
                  <string>Converted Text</string>
@@ -1131,7 +1166,7 @@ p, li { white-space: pre-wrap; }
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color:#B9B4C7;</string>
+           <string notr="true">background-color: #111B31;</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_20">
            <item row="0" column="0" alignment="Qt::AlignHCenter">
@@ -1158,7 +1193,7 @@ p, li { white-space: pre-wrap; }
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgb(85, 0, 0);
+              <string notr="true">color: rgb(220, 220, 220);
 font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
              </property>
              <property name="text">
@@ -1172,11 +1207,14 @@ font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
         <item>
          <widget class="QWidget" name="widget_8" native="true">
           <property name="styleSheet">
-           <string notr="true">background-color: #B9B4C7;</string>
+           <string notr="true">background-color: #111B31;</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_6" columnstretch="3,2" columnminimumwidth="0,0">
            <item row="0" column="0" rowspan="2">
             <widget class="QWidget" name="widget_7" native="true">
+             <property name="styleSheet">
+              <string notr="true">color:white;</string>
+             </property>
              <layout class="QVBoxLayout" name="verticalLayout">
               <item>
                <widget class="QLabel" name="label_5">
@@ -1199,7 +1237,8 @@ font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 <string notr="true">background-color: rgb(255, 255, 255);
+color:black;</string>
                 </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1268,7 +1307,7 @@ background-color:#C88EA7;
                </rect>
               </property>
               <property name="styleSheet">
-               <string notr="true"/>
+               <string notr="true">color:white;</string>
               </property>
               <property name="currentIndex">
                <number>0</number>
@@ -1292,14 +1331,19 @@ background-color:#C88EA7;
                  <widget class="QTabWidget" name="EnglishTab">
                   <property name="styleSheet">
                    <string notr="true">QWidget{
-background-color: #C88EA7;
+background-color: #111B31;
+color:red;
 }
 QToolButton:hover{
-background-color: rgb(255, 243, 225);
-}</string>
+background-color: #8BB3EE;
+}
+</string>
                   </property>
                   <property name="currentIndex">
                    <number>0</number>
+                  </property>
+                  <property name="tabBarAutoHide">
+                   <bool>false</bool>
                   </property>
                   <widget class="QWidget" name="tab">
                    <attribute name="title">
@@ -1539,11 +1583,13 @@ background-color: rgb(255, 243, 225);
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QWidget{
-background-color: #C88EA7;
+background-color: #111B31;
+color:red;
 }
 QToolButton:hover{
-background-color: rgb(255, 243, 225);
-}</string>
+background-color: #8BB3EE;
+}
+</string>
                 </property>
                 <property name="currentIndex">
                  <number>0</number>
@@ -1792,10 +1838,13 @@ background-color: rgb(255, 243, 225);
             <widget class="QWidget" name="widget_2" native="true">
              <property name="styleSheet">
               <string notr="true">QPushButton:hover{
-background-color: rgb(255, 243, 225);
+background-color: #8BB3EE;
 }
 QPushButton{
 	border-radius:1px;
+}
+QWidget{
+color:white;
 }
 
 </string>
@@ -1839,7 +1888,7 @@ QPushButton{
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton:hover{
-background-color: #C88EA7;
+background-color: #8BB3EE;
 }</string>
                 </property>
                 <property name="text">

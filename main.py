@@ -40,6 +40,7 @@ class LoginWindow(QtWidgets.QDialog):
         super(LoginWindow, self).__init__()
         uic.loadUi(r'System_log\login.ui', self)
         self.setWindowTitle("Login System")
+        self.setWindowIcon(QIcon(r'resources\main_logo.webp'))
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
         self.login_btn.clicked.connect(self.handle_login)
         self.new_acc_btn.clicked.connect(self.open_create_account_window)
@@ -63,8 +64,8 @@ class LoginWindow(QtWidgets.QDialog):
         if verify_user(username, password):
             self.open_main_window(username)
         else:
-            QtWidgets.QMessageBox.warning(self, 'Error', 'Invalid username or password')
-        self.close()
+            QMessageBox.warning(self, 'Error', 'Invalid username or password')
+        # self.close()
 
     def open_create_account_window(self):
         self.create_account_window = CreateAccountWindow()
@@ -97,6 +98,7 @@ class CreateAccountWindow(QtWidgets.QDialog):
         super(CreateAccountWindow, self).__init__()
         uic.loadUi(r'System_log\create.ui', self)
         self.setWindowTitle("Create Account")
+        self.setWindowIcon(QIcon(r'resources\main_logo.webp'))
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
 
@@ -173,10 +175,28 @@ class AdminLoginWindow(QtWidgets.QDialog):
     def __init__(self):
         super(AdminLoginWindow, self).__init__()
         uic.loadUi(r'System_log\login.ui', self)
-
+        self.setWindowTitle("Admin Login System")
+        self.setWindowIcon(QIcon(r'resources\main_logo.webp'))
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
         self.login_btn.clicked.connect(self.handle_admin_login)
         self.new_acc_btn.setEnabled(False)
+
+        self.show_btn.clicked.connect(self.toggle_password_visibility)
+        
+        self.password_visible = False
+        self.password_input.setEchoMode(QtWidgets.QLineEdit.Password)  # Set password field to hide text by default
+
         self.cancel_btn.clicked.connect(self.close)
+
+    def toggle_password_visibility(self):
+        if self.password_visible:
+            self.password_input.setEchoMode(QtWidgets.QLineEdit.Password)
+            self.show_btn.setIcon(QIcon(r"System_log/login_assets/eye.png"))
+        else:
+            self.password_input.setEchoMode(QtWidgets.QLineEdit.Normal)
+            self.show_btn.setIcon(QIcon(r"System_log/login_assets/hidden.png"))
+        self.password_visible = not self.password_visible
+
 
     def handle_admin_login(self):
         username = self.username_input.text()
@@ -197,6 +217,8 @@ class AdminMainWindow(QtWidgets.QDialog):
     def __init__(self):
         super(AdminMainWindow, self).__init__()
         uic.loadUi(r'System_log\admin.ui', self)
+        self.setWindowTitle("Registered Users")
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint & ~QtCore.Qt.WindowContextHelpButtonHint)
 
         self.del_btn.clicked.connect(self.handle_delete_user)
         self.populate_user_list()
@@ -206,7 +228,7 @@ class AdminMainWindow(QtWidgets.QDialog):
         self.userListWidget.clear()
         users = get_all_users()
         for user in users:
-            self.userListWidget.addItem(f"ID: {user[0]}, Username: {user[3]}, Email: {user[2]}")
+            self.userListWidget.addItem(f"Username: {user[3]}, Email: {user[2]}")
 
     def handle_delete_user(self):
         selected_item = self.userListWidget.currentItem()
@@ -413,6 +435,8 @@ class MainWindow(QMainWindow):
         self.window=QDialog()
         uic.loadUi(r"System_log\system_logs.ui",self.window)
         self.window.setWindowTitle("System Logs")
+        self.setWindowIcon(QIcon(r'resources\main_logo.webp'))
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)  # remove the ? mark from title bar
         logs = get_user_logs()
         for log in logs:
             self.window.listWidget.addItem(f"User: {log[0]}, Time: {log[1]}, Data: {log[2]}")
